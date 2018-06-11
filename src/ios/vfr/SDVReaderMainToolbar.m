@@ -270,8 +270,32 @@
                 [self addSubview:exportButton]; titleWidth -= (iconButtonWidth + buttonSpacing);
             }
         }
+
+        // Signature button
+
+        BOOL signatureEnable = [[[options objectForKey: @"signature"] objectForKey: @"enabled"] boolValue];
+        NSLog(@"[pdfviewer] toolbar-options signature enabled: %d", signatureEnable);
+        if (signatureEnable) {
+            rightButtonX -= (iconButtonWidth + buttonSpacing); // Next position
+
+            UIButton *signatureButton = [UIButton buttonWithType:UIButtonTypeCustom];
+            signatureButton.frame = CGRectMake(rightButtonX, BUTTON_Y, iconButtonWidth, BUTTON_HEIGHT);
+            [signatureButton setImage:[UIImage imageNamed:@"Reader-Export"] forState:UIControlStateNormal];
+            //[signatureButton addTarget:self action:@selector(exportButtonTapped:) forControlEvents:UIControlEventTouchUpInside];
+            [signatureButton setBackgroundImage:buttonH forState:UIControlStateHighlighted];
+            [signatureButton setBackgroundImage:buttonN forState:UIControlStateNormal];
+            signatureButton.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+            //signatureButton.backgroundColor = [UIColor grayColor];
+            signatureButton.exclusiveTouch = YES;
+
+            [self addSubview:signatureButton]; titleWidth -= (iconButtonWidth + buttonSpacing);
+
+        }
+
+
         
         //view modes
+
         UIImage *singlePageButton = [UIImage imageNamed:@"SDVReader-SinglePage"];
         UIImage *doublePageButton = [UIImage imageNamed:@"SDVReader-DoublePage"];
         UIImage *coverPageButton = [UIImage imageNamed:@"SDVReader-CoverPage"];
@@ -280,7 +304,10 @@
         BOOL useTint = [self respondsToSelector:@selector(tintColor)]; // iOS 7 and up
 
         //don't show viewmode for single page documents
-        if ([document.pageCount intValue] > 1)
+        //if ([document.pageCount intValue] > 1)
+
+        // Only single page mode
+        if (false)
         {
         rightButtonX -= (SHOW_CONTROL_WIDTH + buttonSpacing); // Next position
         
